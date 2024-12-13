@@ -3,11 +3,7 @@ import time
 import os
 from Utils.filecount import count_size_lines
 from Utils.get_pwnedpasswords_file import download_file
-
-
-# Url to download the txt file with the hashes
-# This url will work until the 12 of December of 2025
-url = "https://365education-my.sharepoint.com/:u:/g/personal/cardi782_school_lu/ERKxnnAcYTZFuuhUJ9dflScBkutvLx5kOc0yLflGZe1O7w?e=rxlOXL&download=1"
+from Utils.create_files_folders import create_folder, create_txt_files
 
 
 # Gets the path of the current folder
@@ -18,7 +14,7 @@ folder_name = "TxtFiles"
 folder_path = os.path.join(current_folder, folder_name)
 # Check if the folder exists
 if not os.path.exists(folder_path):
-    os.makedirs(folder_path)
+    create_folder(folder_path)
 
 # Define the txt files path
 file_path = os.path.join(current_folder, "TxtFiles", "pwnedpasswords.txt")
@@ -27,11 +23,10 @@ file_size_path = os.path.join(current_folder, "TxtFiles", "fileSize.txt")
 
 # Ensure the files exists before proceeding
 if not os.path.exists(file_path):
-    download_file(url, file_path)
+    download_file(file_path)
 
 if not os.path.exists(file_size_path):
-    with open(file_size_path, "w", encoding="utf-8") as f:
-        pass
+    create_txt_files(file_size_path)
 
 
 def check_password_in_pwned(password):

@@ -1,8 +1,5 @@
 import os
 
-file_path = "pwnedpasswords.txt"
-file_size_path = "fileSize.txt"
-
 
 def count_lines(file_path):
     """Count the total number of lines in the file."""

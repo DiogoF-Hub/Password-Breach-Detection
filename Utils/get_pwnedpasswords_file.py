@@ -1,7 +1,11 @@
 import requests
 
+# Url to download the txt file with the hashes
+# This url will work until the 12 of December of 2025
+url = "https://365education-my.sharepoint.com/:u:/g/personal/cardi782_school_lu/ERKxnnAcYTZFuuhUJ9dflScBkutvLx5kOc0yLflGZe1O7w?e=rxlOXL&download=1"
 
-def download_file(url, output_file):
+
+def download_file(output_file):
     print(f"Downloading {output_file} from OneDrive...")
 
     # stream=True is used to download the file in chunks and not all at the same time
