@@ -41,6 +41,7 @@ def add_hash_to_random_line(file_path):
     entry = f"{sha1_hash}:{count}\n"
 
     try:
+        print("Attempting to insert the line randomly, this might take some seconds...")
         # Read all lines from the file
         # This makes python load the file into the ram
         with open(file_path, "r", encoding="utf-8") as f:
