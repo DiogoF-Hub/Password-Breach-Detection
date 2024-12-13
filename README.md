@@ -6,7 +6,7 @@ A **Python-based tool** designed to help users determine if their passwords have
 
 ## **Project Context**
 
-This project is part of my schoolwork for the **first semester** of the **first year** in the class **PYTWO1** as I pursue a **BTS in CyberSecurity** at **Lycée Guillaume Kroll (LGK)** in Luxembourg during the year **2024**. 
+This project is part of my schoolwork for the **first semester** of the **first year** in the class **PYTWO1** as I pursue a **BTS in CyberSecurity** at **Lycée Guillaume Kroll (LGK)** in Luxembourg during the year **2024**.
 
 The tool is developed to demonstrate practical programming skills, data handling, and secure password management techniques.
 
