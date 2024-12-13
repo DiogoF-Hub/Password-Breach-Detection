@@ -62,5 +62,6 @@ python main.py
 
 ## **Planned Features**
 
+- **Random Line Insertion**: Functionality to insert entries at random positions within the database file for testing purposes. ✅
 - **Streamlit Interface**: A user-friendly web interface for easier interaction.
-- **Random Line Insertion**: Functionality to insert entries at random positions within the database file for testing purposes.
+
