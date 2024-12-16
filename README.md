@@ -63,7 +63,7 @@ python main.py
 ## **Planned Features**
 
 - **Random Line Insertion**: Functionality to insert entries at random positions within the database file for testing purposes. ✅
+- **Top hashes**: Find the top hashes that have been seen the most in breaches from the txt file. ✅
 - **Random Line Insertion but more efficient**: Make the process of adding a random line more efficient by not loading the file to the RAM.
-- **Top 10 hashes**: Find the top 10 hashes that have been seen the most in breaches from the txt file.
 - **Streamlit Interface**: A user-friendly web interface for easier interaction.
 

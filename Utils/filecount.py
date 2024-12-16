@@ -39,7 +39,6 @@ def count_size_lines(file_path, file_size_path):
                 if file_size_bytes == file_size_bytes_saved:
                     return line_count_saved
 
-        # Cache is empty or invalid, recalculate line count
         print("Counting total lines in the file. This might take a few seconds...")
         line_count = count_lines(file_path)
 

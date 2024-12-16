@@ -4,6 +4,9 @@ import os
 from Utils.filecount import count_size_lines
 from Utils.get_pwnedpasswords_file import download_file
 from Utils.create_files_folders import create_folder, create_txt_files
+from Utils.add_lines.add_end import add_hash_to_file_end
+from Utils.add_lines.add_random import add_hash_to_random_line
+from Utils.top_10_hashes import find_top_hashes
 
 
 # Gets the path of the current folder
@@ -19,14 +22,25 @@ if not os.path.exists(folder_path):
 # Define the txt files path
 file_path = os.path.join(current_folder, "TxtFiles", "pwnedpasswords.txt")
 file_size_path = os.path.join(current_folder, "TxtFiles", "fileSize.txt")
+file_top10_path = os.path.join(current_folder, "TxtFiles", "fileTop10.txt")
 
-
+"""
 # Ensure the files exists before proceeding
 if not os.path.exists(file_path):
     download_file(file_path)
+"""
 
 if not os.path.exists(file_size_path):
     create_txt_files(file_size_path)
+
+if not os.path.exists(file_top10_path):
+    create_txt_files(file_top10_path)
+
+
+def check_file_db():
+    if not os.path.exists(file_path):
+        print("DB pwnedpasswords.txt is missing")
+        download_file(file_path)
 
 
 def check_password_in_pwned(password):
@@ -79,10 +93,101 @@ def check_password_in_pwned(password):
         return f"An error occurred: {e}"
 
 
-# Ask the user for a password
-print("\n")
-user_password = input("Enter the password you want to check: ")
+def loop_file():
+    # Ask the user for a password
+    print("\n")
+    user_password = input("Enter the password you want to check: ")
 
-# Check if the password exists in the file
-result = check_password_in_pwned(user_password)
-print(result)
+    # Check if the password exists in the file
+    result = check_password_in_pwned(user_password)
+    print(result)
+
+
+def add_lines_switch():
+    while True:
+        try:
+            print("\n")
+
+            print("Which way would you like to add a line ?")
+            print("1. At the end of file")
+            print("2. Randomly inside the file")
+            print("3. Go back")
+            print("4. Exit")
+
+            print("\n")
+
+            user_input = int(input("Type the number of the action: "))
+
+            if user_input not in range(1, 5):
+                raise ValueError
+        except ValueError:
+            print("You must type a number between 1 and 4!")
+        else:
+            if user_input == 1:
+                check_file_db()
+                add_hash_to_file_end(file_path)
+            elif user_input == 2:
+                check_file_db()
+                add_hash_to_random_line(file_path)
+            elif user_input == 3:
+                break
+            else:
+                exit()
+            break
+
+    start_func()
+
+
+def get_top_switch():
+    while True:
+        try:
+            print("\n")
+
+            user_input = int(
+                input("Enter the number of top hashes you want to find (e.g., 10): ")
+            )
+        except ValueError:
+            print("You must type a number!")
+        else:
+            find_top_hashes(file_path, file_size_path, file_top10_path, user_input)
+            break
+    start_func()
+
+
+def start_func():
+    while True:
+        try:
+            print("\n")
+
+            print("Which action would you like to do ?")
+            print("1. Search for password inside the file")
+            print("2. Download the DB pwnedpasswords.txt")
+            print("3. Get the top most seen passwords from the DB pwnedpasswords.txt")
+            print("4. Add passwords to DB pwnedpasswords.txt")
+            print("5. Exit")
+
+            print("\n")
+
+            user_input = int(input("Type the number of the action: "))
+
+            if user_input not in range(1, 6):
+                raise ValueError
+        except ValueError:
+            print("You must type a number between 1 and 5!")
+        else:
+
+            if user_input == 1:
+                check_file_db()
+                loop_file()
+            elif user_input == 2:
+                download_file(file_path)
+            elif user_input == 3:
+                check_file_db()
+                get_top_switch()
+            elif user_input == 4:
+                add_lines_switch()
+            else:
+                exit()
+
+
+start_func()

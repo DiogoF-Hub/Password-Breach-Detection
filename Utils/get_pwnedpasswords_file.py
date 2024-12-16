@@ -7,7 +7,6 @@ url = "https://365education-my.sharepoint.com/:u:/g/personal/cardi782_school_lu/
 
 
 def download_file(output_file):
-    print("\n")
     print(f"Downloading {output_file} from OneDrive...")
     time.sleep(2)  # wait 2s so the user can see the print above
     # stream=True is used to download the file in chunks and not all at the same time

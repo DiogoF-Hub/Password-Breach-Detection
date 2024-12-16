@@ -5,6 +5,6 @@ pwnedpasswords.txt
 pwnedpasswords1.txt
 ideas.txt
 fileSize.txt
+fileTop10.txt
 
-top_10_hashes.py
 test.py
