@@ -30,6 +30,7 @@ if not os.path.exists(file_size_path):
 
 
 def check_password_in_pwned(password):
+    print("\n")
     # Calculate the SHA-1 hash of the password
     # hexdigest is for converting to hexadecimal string and upper to match the other hashes inside the file
     sha1_hash = hashlib.sha1(password.encode("utf-8")).hexdigest().upper()
@@ -79,6 +80,7 @@ def check_password_in_pwned(password):
 
 
 # Ask the user for a password
+print("\n")
 user_password = input("Enter the password you want to check: ")
 
 # Check if the password exists in the file
