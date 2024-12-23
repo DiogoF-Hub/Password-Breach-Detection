@@ -24,11 +24,6 @@ file_path = os.path.join(current_folder, "TxtFiles", "pwnedpasswords.txt")
 file_size_path = os.path.join(current_folder, "TxtFiles", "fileSize.txt")
 file_top10_path = os.path.join(current_folder, "TxtFiles", "fileTop10.txt")
 
-"""
-# Ensure the files exists before proceeding
-if not os.path.exists(file_path):
-    download_file(file_path)
-"""
 
 if not os.path.exists(file_size_path):
     create_txt_files(file_size_path)
@@ -71,6 +66,7 @@ def check_password_in_pwned(password):
                     continue
 
                 # Compare the calculated hash with the hash from the file
+                #:.2f rounds it to only 2 decimal places
                 if hash_in_file == sha1_hash:
                     elapsed_time = time.time() - start_time
                     return f"The password has been seen {count} times in data breaches. Checked in {elapsed_time:.2f} seconds."
@@ -81,12 +77,14 @@ def check_password_in_pwned(password):
                     progress = (current_line / total_lines) * 100
                     estimated_total_time = (elapsed_time / current_line) * total_lines
                     estimated_remaining_time = estimated_total_time - elapsed_time
+                    #:.2f rounds it to only 2 decimal places
                     print(
                         f"Progress: {progress:.2f}% | Elapsed Time: {elapsed_time:.2f}s | Estimated Remaining Time: {estimated_remaining_time:.2f}s"
                     )
 
         # If the hash was not found
         elapsed_time = time.time() - start_time
+        #:.2f rounds it to only 2 decimal places
         return f"The password was not found in the list of breached passwords. Checked in {elapsed_time:.2f} seconds."
 
     except Exception as e:

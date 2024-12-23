@@ -10,7 +10,7 @@ This project is part of my schoolwork for the **first semester** of the **first 
 
 The tool is developed to demonstrate practical programming skills, data handling, and secure password management techniques.
 
-The password database used in this project was sourced from the public repository of [Have I Been Pwned](https://haveibeenpwned.com/) using the commands provided in their GitHub project ([PwnedPasswordsDownloader](https://github.com/HaveIBeenPwned/PwnedPasswordsDownloader)). The database, a 9GB file containing approximately 200 million SHA-1 hashed passwords and their breach counts, is currently hosted on **my personal OneDrive** for ease of access.
+The password database used in this project was sourced from the public repository of [Have I Been Pwned](https://haveibeenpwned.com/) using the commands provided in their GitHub project ([PwnedPasswordsDownloader](https://github.com/HaveIBeenPwned/PwnedPasswordsDownloader)). The database, a 9GB file containing approximately 200 million SHA-1 hashed passwords and their breach counts, is currently hosted on **my personal Google Drive** for ease of access.
 
 > **Note**: In the future, I plan to move the hosting to a platform better suited for public data sharing.
 
