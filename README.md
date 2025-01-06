@@ -64,6 +64,8 @@ python main.py
 
 - **Random Line Insertion**: Functionality to insert entries at random positions within the database file for testing purposes. ✅
 - **Top hashes**: Find the top hashes that have been seen the most in breaches from the txt file. ✅
-- **Random Line Insertion but more efficient**: Make the process of adding a random line more efficient by not loading the file to the RAM.
 - **Streamlit Interface**: A user-friendly web interface for easier interaction.
+- **Random Line Insertion but more efficient**: Make the process of adding a random line more efficient by not loading the file to the RAM.
+- **Decrypt Top Password Hashes**: Add functionality to decrypt top password hashes using the [Hashes.com API](https://hashes.com/en/docs) (paid). This will provide insights into the plaintext values of the most commonly breached hashes.
+
 
