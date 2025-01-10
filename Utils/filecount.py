@@ -1,4 +1,5 @@
 import os
+import streamlit as st
 
 
 def count_lines(file_path):
@@ -39,7 +40,7 @@ def count_size_lines(file_path, file_size_path):
                 if file_size_bytes == file_size_bytes_saved:
                     return line_count_saved
 
-        print("Counting total lines in the file. This might take a few seconds...")
+        st.write("Counting total lines in the file. This might take a few seconds...")
         line_count = count_lines(file_path)
 
         # Update the cache
@@ -49,3 +50,18 @@ def count_size_lines(file_path, file_size_path):
 
     except Exception as e:
         raise Exception(f"An error occurred: {e}")
+
+
+def check_file_size_saved(file_path, file_size_path):
+    file_size_bytes = os.path.getsize(file_path)
+    with open(file_size_path, "r", encoding="utf-8") as r:
+        first_line = r.readline().strip()
+        if first_line:  # Cache is not empty
+            Ar = first_line.split(":")
+            file_size_bytes_saved = int(Ar[0])
+            if file_size_bytes == file_size_bytes_saved:
+                return True
+            else:
+                return False
+        else:
+            return False

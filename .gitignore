@@ -2,9 +2,13 @@ venv/
 __pycache__/
 
 pwnedpasswords.txt
-pwnedpasswords1.txt
-ideas.txt
+pwnedpasswords.txt.bak
 fileSize.txt
 fileTop10.txt
+passwordsTemp.txt
 
 test.py
+add_random_test.py
+pwnedpasswords1.txt
+
+ideas.txt

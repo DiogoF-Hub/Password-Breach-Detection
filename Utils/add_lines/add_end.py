@@ -1,35 +1,28 @@
 import hashlib
+import streamlit as st
 
 
-def add_hash_to_file_end(file_path):
-
-    password = input("Enter the password you want to add: ")
-
-    # while loop and try bcs the user might not type a number
-    while True:
-        try:
-            count = int(
-                input(
-                    "Enter the number of times this password has been seen in breaches: "
-                )
-            )
-            break
-        except ValueError:
-            print("Please enter a valid number.")
+def add_hash_to_file_end(file_path, password, count):
+    # Validation
+    password = password.strip()
+    if not password or not count or not isinstance(count, int):
+        st.error("Invalid input: Password or count is missing/invalid.")
+        return
 
     # Hash the password using SHA-1
-    # hexdigest is for converting to hexadecimal string and upper to match the other hashes inside the file
-    sha1_hash = hashlib.sha1(password.encode("utf-8")).hexdigest().upper()
-
-    # Format the line as "<hash>:<count>"
-    entry = f"{sha1_hash}:{count}\n"
-
-    # Append to the file (at the end)
     try:
-        # "a" append in the file
+        sha1_hash = hashlib.sha1(password.encode("utf-8")).hexdigest().upper()
+
+        # Format the line as "<hash>:<count>"
+        entry = f"{sha1_hash}:{count}\n"
+
+        # Append to the file (at the end)
         with open(file_path, "a", encoding="utf-8") as f:
             f.write(entry)
-        print("\n")
-        print(f"Added hash: {sha1_hash} with count {count} to the end of {file_path}")
+
+        st.success(
+            f"Password has been added successfully with hash {sha1_hash} and seen count {count}."
+        )
+
     except Exception as e:
-        print(f"Error: {e}")
+        st.error(f"An error occurred while adding the password: {e}")
