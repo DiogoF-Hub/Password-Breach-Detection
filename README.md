@@ -10,7 +10,11 @@ This project is part of my schoolwork for the **first semester** of the **first 
 
 The tool is developed to demonstrate practical programming skills, data handling, and secure password management techniques.
 
-The password database used in this project was sourced from the public repository of [Have I Been Pwned](https://haveibeenpwned.com/) using the commands provided in their GitHub project ([PwnedPasswordsDownloader](https://github.com/HaveIBeenPwned/PwnedPasswordsDownloader)). The database, a 9GB file containing approximately 200 million SHA-1 hashed passwords and their breach counts, is currently hosted on **my personal Google Drive** for ease of access.
+The password database used in this project was sourced from the public repository of [Have I Been Pwned](https://haveibeenpwned.com/) using the commands provided in their GitHub project ([PwnedPasswordsDownloader](https://github.com/HaveIBeenPwned/PwnedPasswordsDownloader)).
+
+### **Available Databases:**
+- **OneDrive Database**: A 9GB file containing approximately **200 million SHA-1 hashed passwords** and their breach counts. Hosted on **my personal OneDrive** for easy access (valid until **January 11 2026**).
+- **PwnedPasswordsDownloader Database**: A ~40GB file containing around **900 million SHA-1 hashed passwords**. If downloaded, the file **must be named** `pwnedpasswords.txt` and placed in the **root** of the project folder.
 
 > **Note**: In the future, I plan to move the hosting to a platform better suited for public data sharing.
 
@@ -21,7 +25,7 @@ The password database used in this project was sourced from the public repositor
 - **Password Hashing**: Converts user passwords into SHA-1 hashes for secure comparison.
 - **Breach Count Tracking**: Records the number of times a password has appeared in breaches.
 - **Local Database**: Operates without the need for internet access, ensuring user privacy.
-- **Extensible Design**: Planned integration with a Streamlit interface for enhanced user interaction.
+- **Extensible Design**: Integration with a Streamlit interface for enhanced user interaction.
 
 ---
 
@@ -48,15 +52,17 @@ pip install -r requirements.txt
 ## **Usage**
 
 ### **Run the Tool**
-Simply run the `main.py` file, and it will handle everything automatically:
-- If the required password database is missing, it will download it automatically.
-- The tool will fetch the 9GB database file hosted on my personal OneDrive.
-- Once the database is downloaded, the tool will prompt you to input a password to check if it has been compromised.
+Simply run the following command to launch the **Streamlit interface**, which manages all interactions:
 
-Run the following command:
 ```
-python main.py
+streamlit run Home.py
 ```
+
+- If the required password database is missing or incomplete, the interface will guide you to download it.
+- Choose between the **9GB OneDrive database** or the **40GB PwnedPasswordsDownloader** database.
+- Once the database is ready, use the interface to search for compromised passwords, analyze data, or add new entries.
+
+> **Note:** If the database already exists or is incomplete and you wish to redownload it, just click the download button again. This will delete the existing file and download a fresh copy.
 
 ---
 
@@ -64,8 +70,6 @@ python main.py
 
 - **Random Line Insertion**: Functionality to insert entries at random positions within the database file for testing purposes. ✅
 - **Top hashes**: Find the top hashes that have been seen the most in breaches from the txt file. ✅
-- **Streamlit Interface**: A user-friendly web interface for easier interaction.
-- **Random Line Insertion but more efficient**: Make the process of adding a random line more efficient by not loading the file to the RAM. ✅
+- **Streamlit Interface**: A user-friendly web interface for easier interaction. ✅
+- **Random Line Insertion but more efficient**: Make the process of adding a random line more efficient by not loading the whole file to the RAM. ✅
 - **Decrypt Top Password Hashes**: Add functionality to decrypt top password hashes using the [Hashes.com API](https://hashes.com/en/docs) (paid). This will provide insights into the plaintext values of the most commonly breached hashes.
-
-
