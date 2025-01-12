@@ -1,61 +1,71 @@
-import subprocess
-import re
+import requests
+from requests.exceptions import RequestException
 import streamlit as st
 import os
+from Utils.path_var import file_path, file_size_bytes_online, bakfile
 
 
-def download_file(output_file):
-    st.write(f"Downloading {output_file} from Google Drive...")
+# Url to download the txt file with the hashes
+# This url will work until the 11 of January of 2026
+# The url has been modified from :t: to :u: so it forces a direct download and added &download=1 which forces browser/requests to download the file instead of opening it
+url = "https://365education-my.sharepoint.com/:u:/g/personal/cardi782_school_lu/Ednvv2j9VOpCqjZEsZ4ZhcEB4xqK9sSGlIQKG_Izh8aYfg?e=6XfJOY&download=1"
+
+
+def download_file():
+
+    info_var = st.empty()
+    status_placeholder = st.empty()
+    progress_bar = st.empty()
+
+    if os.path.exists(file_path):
+        if file_size_bytes_online != os.path.getsize(file_path):
+            os.remove(file_path)
+            if os.path.exists(bakfile):
+                os.remove(bakfile)
+        else:
+            status_placeholder.success(f"✅ File already exists: {file_path}")
+            return
 
     try:
-        progress_bar = st.progress(0)
-        status_placeholder = st.empty()
+        progress_bar.progress(0)
+        info_var.info(f"Downloading to {file_path}")
 
-        # Run the gdown command using subprocess
-        google_drive_file_id = "1GWTW7KI6ifbUbyvmUs19TgnEGOocaMhY"
-        google_drive_url = f"https://drive.google.com/uc?id={google_drive_file_id}"
+        # Attempt to connect to the URL
+        response = requests.get(url, stream=True, timeout=10)
+        response.raise_for_status()  # Raise an error for HTTP issues
 
-        # gdown command
-        process = subprocess.Popen(
-            ["gdown", google_drive_url, "-O", output_file],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            text=True,
+        # Open file in binary write mode
+        with open(file_path, "wb") as file:
+            chunk_size = 5 * 1024 * 1024  # 5MB chunks
+            downloaded = 0
+
+            for chunk in response.iter_content(chunk_size=chunk_size):
+                if chunk:  # Filter out keep-alive new chunks
+                    file.write(chunk)
+                    downloaded += len(chunk)
+
+                    # Update progress in Streamlit
+                    progress_percentage = downloaded / file_size_bytes_online
+                    progress_bar.progress(min(progress_percentage, 1.0))  # Cap at 100%
+
+                    status_placeholder.info(
+                        f"Downloaded: {downloaded / (1024 * 1024):.2f} MB / {file_size_bytes_online / (1024 * 1024):.2f} MB  \n"
+                        f"**Progress:** {progress_percentage * 100:.2f}%"
+                    )
+
+        status_placeholder.success(f"✅ Download completed: {file_path}")
+        info_var.empty()
+        progress_bar.empty()
+
+    except RequestException as e:
+        # Handle connection issues or invalid URL
+        progress_bar.empty()
+        status_placeholder.error(
+            "❌ Failed to download the file. Please check your internet connection or if the URL is still valid."
         )
-
-        # Parse the output line by line
-        for line in process.stdout:
-            status_placeholder.text(line.strip())
-
-            # Match percentage from the line
-            match = re.search(r"(\d+)%", line)
-            if match:
-                progress = int(match.group(1))
-                progress_bar.progress(progress / 100)
-
-        # Wait for the process to finish
-        process.wait()
-
-        if process.returncode == 0:
-            progress_bar.progress(100)
-            status_placeholder.success(f"Download completed: {output_file}")
-            return True
-        else:
-            raise Exception("Download failed.")
-
+        st.error(f"Error details: {e}")
     except Exception as e:
-        # Check for cookies.txt issue
-        cookies_path = os.path.expanduser("~/.cache/gdown/cookies.txt")
-        error_message = f"An error occurred during the download: {e}\n\n"
-        if os.path.exists(cookies_path):
-            error_message += (
-                f"This might be caused by the `cookies.txt` file located at:\n\n"
-                f"`{cookies_path}`\n\n"
-                f"Please delete the file manually and try again.\n\n"
-            )
-        error_message += (
-            f"If the error persists, try downloading it manually from: "
-            f"https://github.com/HaveIBeenPwned/PwnedPasswordsDownloader"
-        )
-        st.error(error_message)
-        return False
+        # Handle other unexpected issues
+        progress_bar.empty()
+        status_placeholder.error("❌ An unexpected error occurred during the download.")
+        st.error(f"Error details: {e}")

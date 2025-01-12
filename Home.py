@@ -23,9 +23,20 @@ st.markdown(
     - Analyze the most frequently seen passwords in breaches.
     - Add your own passwords to the database for testing purposes.
 
-    **Currently using a 9GB database containing over 200 million SHA-1 hashed passwords!**
+    **Currently, there are two database options available for download:**
 
-    The database is sourced from the [Have I Been Pwned](https://haveibeenpwned.com/) project and downloaded using tools provided by [Pwned Passwords Downloader](https://github.com/HaveIBeenPwned/PwnedPasswordsDownloader). It is hosted on my Google Drive for easy access.
+    1. **OneDrive (Recommended):**
+       - **Size:** ~9GB
+       - **Entries:** ~200 million unique SHA-1 hashed passwords
+       - **Link Valid Until:** *January 11, 2026*
+
+    2. **PwnedPasswordsDownloader:**
+       - **Size:** ~40GB
+       - **Entries:** ~900 million unique SHA-1 hashed passwords
+       - **Note:** The file must be named `pwnedpasswords.txt` and placed in the **root** of the project folder.
+       - [Download from PwnedPasswordsDownloader](https://github.com/HaveIBeenPwned/PwnedPasswordsDownloader)
+
+    The databases are sourced from the [Have I Been Pwned](https://haveibeenpwned.com/) project and made available for offline analysis.
 
     """
 )
@@ -35,27 +46,27 @@ st.markdown(
 
 # Add buttons for navigation
 st.markdown("#### What would you like to do?")
-col1, col2, col3, col4 = st.columns(4)
+col1, col2, col3, col4, col5 = st.columns(5)
 
 with col1:
     if st.button("🔍 Search Passwords"):
-        # Example navigation logic
         switch_page("Search_Password")
 
 with col2:
-    if st.button("⬇️ Download DB"):
-        # Example navigation logic
+    if st.button("📥 Download DB"):
         switch_page("Download_DB")
 
 with col3:
     if st.button("📊 Analyze Top Passwords"):
-        # Example navigation logic
         switch_page("Analyze_Top_Passwords")
 
 with col4:
     if st.button("➕ Add Passwords"):
-        # Example navigation logic
         switch_page("Add_Passwords")
+
+with col5:
+    if st.button("🗑️ Clear Cache"):
+        switch_page("Clear_Cache")
 
 # Add a footer or additional details
 st.markdown(

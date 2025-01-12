@@ -3,88 +3,71 @@ import random
 import fileinput
 import os
 import streamlit as st
-from Utils.filecount import count_lines
+from Utils.filecount import count_size_lines, check_file_db
+from Utils.path_var import file_path, bakfile
 
 
-def add_hash_to_random_line(file_path, password, count):
+def add_hash_to_random_line(password, count):
+    add_warning = st.warning(
+        "⚠️ Don't leave this page until this is done because you might break your local DB."
+    )
+    add_info = st.info("Adding the password...")
+    progress_bar = st.empty()
+    percentage_placeholder = st.empty()
+
+    if check_file_db() == False:
+        add_info.empty()
+        add_warning.empty()
+        return
+
     # Validation
     password = password.strip()
     if not password or not count or not isinstance(count, int) or count < 1:
         st.error("Invalid input: Password or count is missing/invalid.")
+        add_info.empty()
         return
 
     try:
         # Generate SHA-1 hash of the password
         sha1_hash = hashlib.sha1(password.encode("utf-8")).hexdigest().upper()
-
-        # Prepare the line to insert
         line_to_insert = f"{sha1_hash}:{count}"
 
-        # Determine the total number of lines and pick a random line
-        total_lines = count_lines(file_path)
+        total_lines = count_size_lines()
         random_line = random.randint(0, total_lines)
+
+        progress_bar.progress(0)
 
         # Insert the line at the random position
         with fileinput.input(files=(file_path,), inplace=True, backup=".bak") as file:
             for current_line_number, line in enumerate(file):
-                print(line, end="")  # Write existing lines
+                print(line, end="")
+
                 if current_line_number == random_line:
-                    print(line_to_insert)  # Insert the new line at the random position
+                    print(line_to_insert)
 
-        # Remove the backup file created during editing
-        backup_file = file_path + ".bak"
-        if os.path.exists(backup_file):
-            os.remove(backup_file)
+                # Update progress every 100000 lines
+                if (
+                    current_line_number % 100000 == 0
+                    or current_line_number == total_lines - 1
+                ):
+                    progress = (current_line_number + 1) / total_lines
+                    progress_bar.progress(progress)
+                    percentage_placeholder.markdown(
+                        f"**Progress:** {progress * 100:.2f}%"
+                    )
 
-        success = st.success(
+        if os.path.exists(bakfile):
+            os.remove(bakfile)
+
+        add_warning.empty()
+        add_info.empty()
+        progress_bar.empty()
+        percentage_placeholder.empty()
+        st.success(
             f"Password has been added successfully with hash {sha1_hash} and seen count {count} at a random position."
         )
 
     except Exception as e:
+        add_info.empty()
+        progress_bar.empty()
         st.error(f"An error occurred while adding the password: {e}")
-
-
-def add_hash_to_random_line_old(file_path):
-    # Ask the user for a password
-    password = input("Enter the password you want to add: ")
-
-    # Ask the user for the number of times this password has been seen
-    while True:
-        try:
-            count = int(
-                input(
-                    "Enter the number of times this password has been seen in breaches: "
-                )
-            )
-            break
-        except ValueError:
-            print("Please enter a valid number.")
-
-    # Hash the password using SHA-1
-    sha1_hash = hashlib.sha1(password.encode("utf-8")).hexdigest().upper()
-
-    # Format the line as "<hash>:<count>"
-    entry = f"{sha1_hash}:{count}\n"
-
-    try:
-        print("Attempting to insert the line randomly, this might take some seconds...")
-        # Read all lines from the file
-        # This makes python load the file into the ram
-        with open(file_path, "r", encoding="utf-8") as f:
-            lines = f.readlines()
-
-        # Generate a random position to insert the new entry
-        random_position = random.randint(0, len(lines))
-
-        # Insert the new entry at the random position
-        lines.insert(random_position, entry)
-
-        # Write the updated content back to the file
-        with open(file_path, "w", encoding="utf-8") as f:
-            f.writelines(lines)
-
-        print(
-            f"Added hash: {sha1_hash} with count {count} at line {random_position + 1} in {file_path}"
-        )
-    except Exception as e:
-        print(f"Error: {e}")

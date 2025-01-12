@@ -1,8 +1,14 @@
 import hashlib
 import streamlit as st
+from Utils.filecount import check_file_db
+from Utils.path_var import file_path
 
 
-def add_hash_to_file_end(file_path, password, count):
+def add_hash_to_file_end(password, count):
+
+    if check_file_db(file_path) == False:
+        return
+
     # Validation
     password = password.strip()
     if not password or not count or not isinstance(count, int):

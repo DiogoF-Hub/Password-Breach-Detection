@@ -1,6 +1,6 @@
 import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
-from main import find_top_hashes, file_path, file_size_path, file_top10_path
+from Utils.top_10_hashes import find_top_hashes
 
 
 st.set_page_config(
@@ -24,6 +24,7 @@ top_n = st.number_input(
 # Placeholder for processing and results
 status_placeholder = st.empty()
 result_placeholder = st.empty()
+info_var = st.empty()
 
 # Button to trigger `find_top_hashes`
 if st.button(f"Analyze Top {top_n} Password Hashes"):
@@ -34,16 +35,12 @@ if st.button(f"Analyze Top {top_n} Password Hashes"):
         st.error("Please enter a number between 1 and 100 for 'top_n'.")
     else:
         try:
-            info_var = st.info("Searching the database...")
             # Call the function and get the formatted results
-            formatted_results = find_top_hashes(
-                file_path, file_size_path, file_top10_path, top_n
-            )
-            info_var.empty()
-            st.success("Analysis completed.")
-            st.markdown(f"**Top {top_n} hashes with the highest counts:**")
-            for result in formatted_results:
-                st.text(result)
+            formatted_results = find_top_hashes(top_n)
+            if formatted_results:
+                st.markdown(f"**Top {top_n} hashes with the highest counts:**")
+                for result in formatted_results:
+                    st.text(result)
         except Exception as e:
             st.error(f"An error occurred: {e}")
 

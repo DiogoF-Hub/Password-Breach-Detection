@@ -3,7 +3,6 @@ from streamlit_extras.switch_page_button import switch_page
 import time
 from Utils.add_lines.add_random import add_hash_to_random_line
 from Utils.add_lines.add_end import add_hash_to_file_end
-from main import file_path
 
 st.set_page_config(
     page_title="Add Passwords",
@@ -51,7 +50,6 @@ add_position = st.radio(
     index=0,
 )
 
-
 # Button to add the password
 if st.button("Add Password"):
     password_stripped = password_to_add.strip()
@@ -59,16 +57,11 @@ if st.button("Add Password"):
         if not isinstance(seen_count, int) or seen_count < 1:
             st.error("Please enter a number to add.")
         else:
-            add_info = st.info("Adding the password...")
             try:
                 if add_position == "At the end of the file":
-                    add_hash_to_file_end(file_path, password_stripped, seen_count)
-                    time.sleep(2)
-                    add_info.empty()
+                    add_hash_to_file_end(password_stripped, seen_count)
                 else:
-                    add_hash_to_random_line(file_path, password_stripped, seen_count)
-                    time.sleep(5)
-                    add_info.empty()
+                    add_hash_to_random_line(password_stripped, seen_count)
             except Exception as e:
                 st.error(f"An error occurred while adding the password: {e}")
     else:
