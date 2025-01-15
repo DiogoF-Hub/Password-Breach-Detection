@@ -35,19 +35,32 @@ def download_file():
         response.raise_for_status()  # Raise an error for HTTP issues
 
         # Open file in binary write mode
+        # Requests will download the file as a stream of bytes, so by opening it like this we can write in raw bytes directly to the file without any encoding or transformation
         with open(file_path, "wb") as file:
-            chunk_size = 5 * 1024 * 1024  # 5MB chunks
-            downloaded = 0
+            # The file will be downloaded each 10MB in chunks
+            chunk_size = 10 * 1024 * 1024  # 10MB chunks
+            downloaded = 0  # How much we have downloaded
 
+            # iter_content will make sure to download the file each chunk
+            # for will loop over each received chunk of data
             for chunk in response.iter_content(chunk_size=chunk_size):
-                if chunk:  # Filter out keep-alive new chunks
+
+                # This check filters out empty chunks, which might happen bcs of network behavior or keep-alive packets
+                # keep-alive packets are small, periodic network messages sent between devices to maintain an active connection without transferring meaningful data. They prevent the connection from being closed due to inactivity.
+                if chunk:
+                    # Writes inside the file
                     file.write(chunk)
+                    # Update the var with the current download size of the file
                     downloaded += len(chunk)
 
                     # Update progress in Streamlit
+                    # Streamlit progress bar is expecting a number from 0 to 1, where 0 is 0% and 1 is 100%
+                    # This can be 0.1 or 0.7343, and this will be put into the bar
                     progress_percentage = downloaded / file_size_bytes_online
+                    # min(progress_percentage, 1.0) ensures the value doesn't exceed 100% (in case of slight over-download).
                     progress_bar.progress(min(progress_percentage, 1.0))  # Cap at 100%
 
+                    # :.2f rounds the number to two decimal places and displays only those two digits after the decimal point.
                     status_placeholder.info(
                         f"Downloaded: {downloaded / (1024 * 1024):.2f} MB / {file_size_bytes_online / (1024 * 1024):.2f} MB  \n"
                         f"**Progress:** {progress_percentage * 100:.2f}%"

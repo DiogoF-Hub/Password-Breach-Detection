@@ -20,6 +20,6 @@ file_size_path = os.path.join(folder_path, "fileSize.txt")
 file_top10_path = os.path.join(folder_path, "fileTop10.txt")
 file_passwords_temp = os.path.join(folder_path, "passwordsTemp.txt")
 
-# Expected File size in bytes (8.39 GB)
+# Expected File size in bytes (8.39 GB) from the file online
 # _ are only used for readability and does not affect the value of the number.
 file_size_bytes_online = 9_010_985_310

@@ -6,7 +6,8 @@ from Utils.path_var import file_path
 
 def add_hash_to_file_end(password, count):
 
-    if check_file_db(file_path) == False:
+    # Check if the db file exists before continuing
+    if check_file_db() == False:
         return
 
     # Validation
@@ -17,6 +18,8 @@ def add_hash_to_file_end(password, count):
 
     # Hash the password using SHA-1
     try:
+        # .hexdigest converts that binary hash into a hexadecimal string, this makes it easier to read, store, or compare.
+        # .upper will match the same way as its written in the file
         sha1_hash = hashlib.sha1(password.encode("utf-8")).hexdigest().upper()
 
         # Format the line as "<hash>:<count>"

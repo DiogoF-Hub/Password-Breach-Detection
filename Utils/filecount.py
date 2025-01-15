@@ -3,8 +3,8 @@ import streamlit as st
 from Utils.path_var import file_path, file_size_path, file_passwords_temp
 
 
+# This func loops the file to count the lines
 def count_lines():
-    """Count the total number of lines in the file."""
     try:
         with open(file_path, "r", encoding="utf-8") as f:
             line_count = 0  # Initialize a counter
@@ -12,7 +12,7 @@ def count_lines():
                 line_count += 1  # Increment the counter for each line
             return line_count
     except FileNotFoundError:
-        # This except is not really needed bcs its already being check at the beginning of main.py but just in case
+        # This except is not really needed bcs its already being check when the script runs but just in case
         raise FileNotFoundError(f"File '{file_path}' not found.")
     except Exception as e:
         raise Exception(f"Error counting lines: {e}")
@@ -24,9 +24,10 @@ def write_cache(file_size_bytes, line_count):
         w.write(f"{file_size_bytes}:{line_count}\n")
 
 
+# This is the func we call to get the lines bcs this one checks the temp too and if not calls the func above
 def count_size_lines():
     try:
-        # Get the file size in bytes
+        # Get the current file size in bytes
         file_size_bytes = os.path.getsize(file_path)
 
         # Read the cache file
@@ -39,8 +40,10 @@ def count_size_lines():
 
                 # Check if the cached size matches the current size
                 if file_size_bytes == file_size_bytes_saved:
+                    # If yes just return the lines number saved
                     return line_count_saved
 
+        # Bcs the cache did not match or was empty we call the func above to loop the file
         count_info = st.info(
             "Counting total lines in the file. This might take a few seconds..."
         )
@@ -56,6 +59,9 @@ def count_size_lines():
         raise Exception(f"An error occurred: {e}")
 
 
+# This func is used when we search for passwords, to know if we search in temp first or no
+# Yes if the file is the same
+# No if the file is not the same
 def check_file_size_saved():
     file_size_bytes = os.path.getsize(file_path)
     with open(file_size_path, "r", encoding="utf-8") as r:
@@ -71,6 +77,7 @@ def check_file_size_saved():
             return False
 
 
+# This func is called everytime we try to something with our db, and this checks if the db exists
 def check_file_db():
     if os.path.exists(file_path):
         return True
@@ -88,6 +95,7 @@ def check_file_db():
         return False
 
 
+# This func is used to check passwords saved and check if the password is already there or no
 def check_stored_passwords(sha1_hash):
     with open(file_passwords_temp, "r", encoding="utf-8") as f:
         for current_line in f:
@@ -97,6 +105,7 @@ def check_stored_passwords(sha1_hash):
     return False
 
 
+# This one simply clears the stored passwords
 def clear_stored_passwords():
     with open(file_passwords_temp, "w") as file:
         pass  # Writing nothing clears the file

@@ -3,6 +3,7 @@ from Utils.path_var import file_size_path, file_top10_path, file_passwords_temp
 
 
 def clear_txt_files():
+    # array with all the file path to clear
     files_to_clear = [file_size_path, file_top10_path, file_passwords_temp]
 
     try:
