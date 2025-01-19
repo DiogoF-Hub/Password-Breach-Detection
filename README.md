@@ -73,3 +73,6 @@ streamlit run Home.py
 - **Streamlit Interface**: A user-friendly web interface for easier interaction. ✅
 - **Random Line Insertion but more efficient**: Make the process of adding a random line more efficient by not loading the whole file to the RAM. ✅
 - **Decrypt Top Password Hashes**: Add functionality to decrypt top password hashes using the [Hashes.com API](https://hashes.com/en/docs) (paid). This will provide insights into the plaintext values of the most commonly breached hashes.
+- **Database Selection in GUI**: Implement a feature where users can easily switch between multiple databases (e.g., the 9GB and 40GB options) directly in the interface, catering to performance needs and testing requirements.
+- **Better Hosting Solutions**: Host both the 9GB (smaller) and 40GB (full) databases, allowing users to download and store both. Provide an option to select the preferred database from the GUI.
+- **Advanced Hash Support**: Expand functionality to include additional hashing algorithms like MD5 and SHA-256 from other databases, making the tool more versatile.
