@@ -26,6 +26,10 @@ The password database used in this project was sourced from the public repositor
 - **Breach Count Tracking**: Records the number of times a password has appeared in breaches.
 - **Local Database**: Operates without the need for internet access, ensuring user privacy.
 - **Extensible Design**: Integration with a Streamlit interface for enhanced user interaction.
+- **Download Database from OneDrive**: Provides a streamlined option to download a 9GB database directly from OneDrive via the GUI.
+- **Top Passwords Analysis**: Identifies the most frequently breached passwords from the database, giving users insights into commonly used weak passwords.
+- **Add Passwords**: Allows users to add new password hashes to the database, either at the end or at a random position within the file.
+- **Clear Cache**: Provides a feature to clear cached files, such as top passwords or previously searched hashes, to reset or refresh stored data.
 
 ---
 
